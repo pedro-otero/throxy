@@ -1,0 +1,26 @@
+{
+  "name": "throxy",
+  "version": "0.0.0",
+  "description": "Makes the functions in an object return promises that fullfill to return value of the original function in a throttled fashion",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [
+    "throttle",
+    "queue",
+    "limits"
+  ],
+  "author": "Pedro Otero <pedro.otero.prada@gmail.com> (https://co.linkedin.com/in/pedrooteroprada)",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.6.0"
+  },
+  "dependencies": {
+    "throttled-queue": "^1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pedro-otero/throxy.git"
+  }
+}

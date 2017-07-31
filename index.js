@@ -20,7 +20,11 @@ module.exports = function (proxee, t, exceptions) {
         if (exceptions.indexOf(key) == -1) {
             return new Promise((resolve, reject) => {
                 queue.push(() => {
-                    resolve(boundFunction());
+                    try {
+                        resolve(boundFunction());
+                    } catch (error) {
+                        reject(error);
+                    }
                 });
             });
         } else {

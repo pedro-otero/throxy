@@ -10,7 +10,10 @@ const proxee = {
         return Promise.resolve(n * 2);
     },
     exception: () => 'exception',
-    nonFunction: 'non function'
+    nonFunction: 'non function',
+    errorMaker: function () {
+        throw new Error('this is an error');
+    }
 }
 
 describe('Throxy', function () {
@@ -43,6 +46,10 @@ describe('Throxy', function () {
 
     it("puts non functions in the proxy as is", function () {
         expect(proxy.nonFunction).toEqual('non function');
+    });
+
+    it("rejects promise if there is an error", function (done) {
+        proxy.errorMaker().then(result => fail(), error => done());
     });
 
 });

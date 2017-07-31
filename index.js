@@ -1,9 +1,35 @@
 "use strict";
 
-const createProxy = require('./create-proxy');
-const throttledQueue = require('throttled-queue');
+module.exports = function (proxee, t, exceptions) {
 
-module.exports = function (proxee, n, t, exceptions) {
-    const throttle = throttledQueue(n, t);
-    return createProxy(proxee, throttle, exceptions);
+    const queue = [];
+
+    if (!exceptions) {
+        exceptions = [];
+    }
+
+    setInterval(() => {
+        if (queue.length > 0) {
+            queue.shift()();
+        }
+    }, t);
+
+    const convertFunction = key => function () {
+        const args = Array.prototype.slice.call(arguments);
+        const boundFunction = proxee[key].bind(proxee, ...args);
+        if (exceptions.indexOf(key) == -1) {
+            return new Promise((resolve, reject) => {
+                queue.push(() => {
+                    resolve(boundFunction());
+                });
+            });
+        } else {
+            return boundFunction();
+        }
+    }
+
+    Object.keys(proxee).forEach(key => {
+        const value = proxee[key];
+        this[key] = (typeof value === 'function') ? convertFunction(key) : value;
+    });
 }

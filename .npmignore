@@ -86,4 +86,3 @@ jspm_packages
 /spec/
 /index.spec.js
 .idea/
-/create-proxy.spec.js

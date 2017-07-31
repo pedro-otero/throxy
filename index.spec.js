@@ -3,12 +3,8 @@
 const Throxy = require('./index');
 
 const proxee = {
-    foo: () => {
-        return Promise.resolve(new Date().getTime())
-    },
-    bar: n => {
-        return Promise.resolve(n * 2);
-    },
+    foo: () => Promise.resolve(new Date().getTime()),
+    bar: n => Promise.resolve(n * 2),
     exception: () => 'exception',
     nonFunction: 'non function',
     errorMaker: function () {

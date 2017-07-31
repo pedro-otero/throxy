@@ -13,19 +13,30 @@ In the root of your Node project run `npm install throxy`
 ```javascript
 const myObject = new MyObject(); // your original object
 const Throxy = require('throxy');
-const proxy = new Throxy(myObject, 1, 1000);
+const proxy = new Throxy(myObject, 1000);
 // you just created a throttled version of your object
+```
+
+Please note that for every function that is throttled, its return value is given as a Promise.
+
+
+```javascript
+const myObject = {
+    foo: (x) => x * 2
+}
+const Throxy = require('throxy');
+const proxy = new Throxy(myObject, 1000);
+proxy.foo(2).then(result => console.log(result); // 4 is printed
 ```
 
 ### The Throxy constructor
 
 ```javascript
-function (proxee, n, t[, exceptions])
+function (proxee, t[, exceptions])
 ```
 - **proxee**: The object for which you want a proxy
-- **n**: Max amount of simultaneous requests the proxy will allow in a given **t**
-- **t**: Period of time on which max **n** simultaneous requests can be made to the proxy
-- **exceptions**: Array of names of the functions of this object that you don't want to throttle
+- **t**: Period of time on which the queue is processed. The queue has the pending invocations of every function that is meant to be throttled. Every `t` milliseconds, every invocation is fulfilled.
+- **exceptions**: Array of names of the functions of this object that you don't want to throttle. Such functions behave just like in the original object. They don't return promises unless the original functions do.
 
 If you are proxying a client of an API, `n` and `t` are the arguments that describe its limits.
 
